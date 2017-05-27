@@ -1,0 +1,18 @@
+app-message > div{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px solid #efefef;
+  transition: background-color 200ms ease;
+
+  &:hover{
+    background-color: #e1e1e1;
+  }
+
+  &:nth-child(2){
+    border-top: none;
+  }
+
+  &.is-new{
+    background-color: lightblue;
+  }
+}

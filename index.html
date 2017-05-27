@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS</title>
+
+  <!--Import JS-->
+  <script type="application/javascript" src="jspm_packages/system.js"></script>
+  <script type="application/javascript" src="config.js"></script>
+  <script type="application/javascript">
+
+    SystemJS.import('main.js').then(()=>{
+        console.log('Init Success');
+    }, (error)=>{
+        console.log('Init Error', error);
+    })
+  </script>
+
+  <!--Import Styles-->
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+</head>
+<body style="position: absolute;top:0px;bottom:0px;width:100%;">
+  <app-main></app-main>
+</body>
+</html>

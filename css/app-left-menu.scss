@@ -1,0 +1,33 @@
+app-left-menu{
+  background-color: #eee;
+
+  .pure-menu-item{
+    transition: all 200ms;
+
+    &.pure-menu-selected{
+      transform: scale(1.05);
+    }
+
+    &.pure-menu-selected > a, &:focus > a, > a:hover{
+      background-color: #ccc;
+    }
+  }
+
+  .channel-name{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+app-avatar{
+  display: inline-block;
+  height: 48px;
+  width: 48px;
+
+
+
+  img{
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
