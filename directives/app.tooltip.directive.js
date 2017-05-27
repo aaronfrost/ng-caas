@@ -14,6 +14,8 @@ app.directive('appTooltip', function(PositionService){
       let tooltip;
       let positionInterval;
 
+      console.log("Component Initing");
+
       init();
 
       function init(){

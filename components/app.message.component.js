@@ -44,6 +44,7 @@ class MessageController{
     this.$el = $element;
 
     this.showEditModal = false;
+    console.log("Component Initing");
   }
 
   $onChanges(changes){

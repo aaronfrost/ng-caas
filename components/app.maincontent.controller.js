@@ -5,6 +5,7 @@ export class MainContentController {
     this.$el = $element;
     this.$timeout = $timeout;
     this.$q = $q;
+    console.log("Component Initing");
   }
 
   $onChanges(changes){
