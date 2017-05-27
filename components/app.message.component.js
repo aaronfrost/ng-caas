@@ -10,10 +10,13 @@ const template = `
   <div class="pure-u-2-3">{{$ctrl.message.text}}</div>
   <div class="pure-u-1-24"></div>
 </div>
-<app-popover show="$ctrl.showPopover" on-close="$ctrl.onMessagePopoverClose()" above="true">
+`;
+
+const popoverTemplate = `
+<app-popover show="getShowPopover()" on-close="onMessagePopoverClose();" above="true">
   <div class="pure-g">
     <div class="pure-u-1-5">
-      <span ng-click="$ctrl.toggleShowEditModal();$ctrl.toggleMessagePopover()" app-tooltip="Click to edit this message">Edit</span>
+      <span ng-click="onClickEdit()" app-tooltip="Click to edit this message">Edit</span>
     </div>
     <div class="pure-u-1-5"></div>
     <div class="pure-u-1-5" app-tooltip="Click to delete this message">Delete</div>
@@ -21,17 +24,20 @@ const template = `
     <div class="pure-u-1-5" app-tooltip="Click to relpy to this message">Reply To</div>
   </div>
 </app-popover>
-<app-modal show="$ctrl.showEditModal" on-close="$ctrl.onEditModalClosed()">
+`;
+
+const modalTemplate = `
+<app-modal show="getShowModal()" on-close="onEditModalClosed()">
   <h5>Edit Message</h5>
   <form class="pure-form">
     <div class="pure-group">
-      <textarea class="pure-input-1" placeholder="you cannot leave the message blank" ng-model="$ctrl.message.text" style="font-size:12px;"></textarea>
+      <textarea class="pure-input-1" placeholder="you cannot leave the message blank" ng-model="message.text" style="font-size:12px;"></textarea>
     </div>
     <BR>
     <BR>
     <div class="pure-controls" style="text-align:right;">
-      <button type="submit" class="pure-button" ng-click="$ctrl.cancelEditedMessage()">Cancel</button>
-      <button type="submit" class="pure-button pure-button-primary" ng-click="$ctrl.saveEditedMessage()">Save</button>
+      <button type="submit" class="pure-button" ng-click="cancelEditedMessage()">Cancel</button>
+      <button type="submit" class="pure-button pure-button-primary" ng-click="saveEditedMessage()">Save</button>
     </div>
   </form>
 </app-modal>
@@ -39,8 +45,9 @@ const template = `
 
 class MessageController{
 
-  constructor(UserService, $element){
+  constructor(UserService, $element, ComponentService){
     this.userService = UserService;
+    this.componentService = ComponentService;
     this.$el = $element;
 
     this.showEditModal = false;
@@ -52,6 +59,12 @@ class MessageController{
     }
   }
 
+  $onDestroy(){
+    if(this.popoverRef){
+      this.popoverRef.api.doDestroy();
+    }
+  }
+
   setupMessage(){
     this.originalMessageText = this.message.text;
     this.userService.getUserById(this.message.creator)
@@ -60,6 +73,33 @@ class MessageController{
 
   toggleMessagePopover(){
     this.showPopover = !!!this.showPopover;
+
+    if(this.showPopover){
+      this.createPopover()
+    }
+  }
+
+  createPopover(){
+    let ref = this.popoverRef = this.componentService.createComponent({
+      template: popoverTemplate,
+      anchor: this.$el,
+      data: {
+        getShowPopover: ()=> this.showPopover,
+        onMessagePopoverClose: ()=> {
+          this.showPopover = false;
+          ref.api.doDestroy();
+        },
+        onClickEdit: ()=>{
+          this.toggleShowEditModal();
+          this.toggleMessagePopover()
+        }
+      }
+    });
+    ref.result.then(()=>{
+      this.popoverRef = undefined;
+    }, ()=>{
+
+    })
   }
 
   onMessagePopoverClose(){
@@ -72,6 +112,26 @@ class MessageController{
 
   toggleShowEditModal(){
     this.showEditModal = !!!this.showEditModal;
+    if(this.showEditModal){
+      this.createEditModal();
+    }
+  }
+
+  createEditModal(){
+    let ref = this.modalRef = this.componentService.createComponent({
+      template: modalTemplate,
+      anchor: this.$el,
+      data: {
+        onEditModalClosed: ()=> {
+          this.onEditModalClosed();
+          ref.api.doDestroy();
+        },
+        getShowModal: ()=> this.showEditModal,
+        message: this.message,
+        cancelEditedMessage: ()=> this.cancelEditedMessage(),
+        saveEditedMessage: ()=> this.saveEditedMessage()
+      }
+    })
   }
 
   saveEditedMessage(){

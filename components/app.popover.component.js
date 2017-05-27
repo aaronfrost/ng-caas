@@ -88,8 +88,10 @@ class PopoverController{
   }
 
   $onDestroy(){
-    this.deactivatePopover();
     this.$el.remove();
+
+    // Cleans up the body click listeners
+    $(document.body).off(`click.popoverbodyclicklistener${this.count}`);
   }
 }
 

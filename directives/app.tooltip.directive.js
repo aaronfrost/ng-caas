@@ -1,60 +1,50 @@
-import angular from 'angular';
 import $ from 'jquery';
 
 const tooltips = [];
 
-const app = angular.module('app.directives', []);
+let injector;
+let PositionService;
+let positionInterval;
+let $body = $(document.body);
 
-app.directive('appTooltip', function(PositionService){
-  return {
-    restrict: 'A',
-    replace: false,
-    link: function(scope, el, attrs){
+// Instead of two listeners for each tooltip, just two global delegate listeners for all tooltips
+$body.on('mouseenter', '[app-tooltip]', function(e){
+  let el, text;
+  let $this = $(this);
 
-      let tooltip;
-      let positionInterval;
+  // Get the angular injector, so that I can get the PositionService.
+  // I want the PositionService, so that it can update the position of my tooltip.
+  injector = injector || $body.injector();
+  PositionService = PositionService || injector.get('PositionService');
 
-      init();
+  // Get the text from the event target
+  text = $this.attr('app-tooltip');
 
-      function init(){
-        attrs.$observe('appTooltip', ()=>{
-          updateText();
-        });
-        addHover();
-      }
+  // Have jQuery build the DOM element
+  el = $(`<app-tooltip-base class="tt-hidden"><span class="tt-text">${text}</span></app-tooltip-base>`);
 
-      function updateText(){
-        if(attrs.appTooltip && attrs.appTooltip.length){
-          scope.text = attrs.appTooltip.replace(/\n/ig, '<br>');
-        }
-      }
+  // Attach it to the body, and then store a reference to it
+  $body.append(el);
+  tooltips.push(el);
 
-      function addHover(){
-        //No destroy listener needed, since events are on this element. `removeData` takes care of it
-        el.on('mouseenter', createTooltip);
-        el.on('mouseleave', destroyTooltip);
-      }
+  // Update the position, then remove the hidden class, so it will appear
+  updatePosition(el, $this);
+  el.removeClass('tt-hidden');
 
-      function createTooltip(){
-        destroyTooltip();
-        tooltip = $(`<app-tooltip-base class="tt-hidden"><span class="tt-text">${scope.text}</span></app-tooltip-base>`);
-        tooltip.appendTo(document.body);
-        tooltips.push(tooltip);
-        PositionService.positionElement(tooltip[0], el[0]);
-        tooltip.removeClass('tt-hidden');
-        positionInterval = setInterval(()=>{
-          PositionService.positionElement(tooltip[0], el[0]);
-        }, 200);
-      }
+  // In case of scrolling and such, update the position regularly.
+  positionInterval = setInterval(()=> updatePosition(el, $this), 100);
 
-      function destroyTooltip(){
-        clearInterval(positionInterval);
-        destroyAllTooltips();
-      }
-
-      function destroyAllTooltips(){
-        tooltips.forEach(tt => tt.remove());
-      }
-    }
-  };
+}).on('mouseleave', '[app-tooltip]', function(){
+  clearInterval(positionInterval);
+  destroyAllTooltips();
 });
+
+// A function to update the position of the tooltip
+function updatePosition(el, anchor){
+  PositionService.positionElement($(el)[0], $(anchor)[0]);
+}
+
+// Destroys all Tooltips
+function destroyAllTooltips(){
+  tooltips.forEach(tt => tt.remove() );
+}
