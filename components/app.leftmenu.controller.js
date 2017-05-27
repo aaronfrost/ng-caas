@@ -7,6 +7,7 @@ export class LeftMenuController {
       this.channels = channels;
       this.selectChannel(channels[0]);
     })
+    console.log("Component Initing");
   }
 
   selectChannel(channel) {

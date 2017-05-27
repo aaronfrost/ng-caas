@@ -22,6 +22,7 @@ class MessageInputController{
     this.$el = $element;
 
     this.$el.addClass('pure-g');
+    console.log("Component Initing");
   }
 
   addMessage(){

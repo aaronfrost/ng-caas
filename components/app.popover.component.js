@@ -18,6 +18,7 @@ class PopoverController{
     this.$scope = $scope;
     this.active = false;
     this.count = count++;
+    console.log("Component Initing");
   }
 
   $onChanges(changes){

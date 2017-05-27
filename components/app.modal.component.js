@@ -23,6 +23,7 @@ class ModalController{
 
     this.active = false;
     this.count = count++;
+    console.log("Component Initing");
   }
 
   $onChanges(changes){

@@ -6,6 +6,7 @@ export class AvatarController {
     this.showPopover = false;
     this.updatePicSize();
     this.considerPopover();
+    console.log("Component Initing");
   }
 
   $onChanges(changes){

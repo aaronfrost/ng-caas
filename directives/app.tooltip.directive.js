@@ -33,6 +33,7 @@ $body.on('mouseenter', '[app-tooltip]', function(e){
 
   // In case of scrolling and such, update the position regularly.
   positionInterval = setInterval(()=> updatePosition(el, $this), 100);
+  console.log("Component Initing");
 
 }).on('mouseleave', '[app-tooltip]', function(){
   clearInterval(positionInterval);
