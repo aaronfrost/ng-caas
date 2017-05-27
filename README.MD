@@ -18,6 +18,6 @@ The techniques in this project are a result of working closely with [Tyler Russe
 spending time looking at flamecharts in Chrome's Devtools. The larger the app you work on, the more benefit can be gained
 from using these techniques. 
 
-* The branch [ng1-no-caas] is a simple app, made w/ AngularJS. It DOES NOT use CAAS.
-* The branch [ng1-caas] is a simple app, made w/ AngularJS. It has several changes that modify some of the components
+* The branch [ng1-no-caas](https://github.com/aaronfrost/ng-caas/tree/ng1-no-caas) is a simple app, made w/ AngularJS. It DOES NOT use CAAS.
+* The branch [ng1-caas](https://github.com/aaronfrost/ng-caas/tree/ng1-caas) is a simple app, made w/ AngularJS. It has several changes that modify some of the components
 to use the CAAS pattern.
