@@ -3,8 +3,8 @@ import angular from 'angular';
 const template = `
 <div class="pure-g" ng-click="$ctrl.toggleMessagePopover()" ng-class="{'is-new': $ctrl.message.isNew}">
   <div class="pure-u-1-24"></div>
-  <div class="pure-u-1-6" stop-bubble="click">
-    <app-avatar user-id="$ctrl.message.creator" app-tooltip="Message from {{:: $ctrl.creator.name.first}} {{:: $ctrl.creator.name.last}}"></app-avatar>
+  <div class="pure-u-1-6" stop-bubble="click" app-tooltip="Message from {{:: $ctrl.creator.name.first}} {{:: $ctrl.creator.name.last}}">
+    <app-avatar user-id="$ctrl.message.creator" ></app-avatar>
   </div>
   <div class="pure-u-1-12"></div>
   <div class="pure-u-2-3">{{$ctrl.message.text}}</div>

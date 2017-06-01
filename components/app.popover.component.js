@@ -18,6 +18,8 @@ class PopoverController{
     this.$scope = $scope;
     this.active = false;
     this.count = count++;
+
+    $scope.$parent.$on('$destroy', ()=> $scope.$destroy());
     console.log("Component Initing");
   }
 
@@ -35,8 +37,7 @@ class PopoverController{
     this.active = true;
 
     // Attach the element to the body, so overflow won't cut it off.
-    this.$el
-      .appendTo(document.body);
+    this.$el.appendTo(document.body);
 
     // Position the element, now that it is added
     this.positionElement();
@@ -75,8 +76,10 @@ class PopoverController{
     this.active = false;
 
     // Hides it using CSS
-    this.$el
-      .removeClass('active');
+    this.$el.removeClass('active');
+
+    // Remove the element from the dom on deactivation
+    this.$el.remove();
 
     // Cleans up the body click listeners
     $(document.body).off(`click.popoverbodyclicklistener${this.count}`);

@@ -18,11 +18,14 @@ let count = 0;
 
 class ModalController{
 
-  constructor($element){
+  constructor($element, $scope){
     this.$el = $($element);
 
     this.active = false;
     this.count = count++;
+
+    $scope.$parent.$on('$destroy',()=> $scope.$destroy());
+
     console.log("Component Initing");
   }
 
@@ -43,6 +46,7 @@ class ModalController{
 
   deactivateModal(){
     this.active = false;
+    this.$el.remove();
     this.onClose();
   }
 

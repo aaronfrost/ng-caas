@@ -23,7 +23,7 @@ const template = `
         <label for="name">Email: </label>
         <span class="pure-form-message-inline">{{$ctrl.user.email}}</span>
       </div>
-      <div class="pure-control-group" app-tooltip="Click to call {{$ctrl.user.name.first}} {{$ctrl.user.name.last}}">
+      <div class="pure-control-group" app-tooltip="Click to blah {{$ctrl.user.name.first}} {{$ctrl.user.name.last}}">
         <label for="name">Phone: </label>
         <span class="pure-form-message-inline">{{$ctrl.user.phone}}</span>
       </div>

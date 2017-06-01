@@ -9,6 +9,7 @@ app.directive('appTooltip', function(PositionService){
   return {
     restrict: 'A',
     replace: false,
+    scope: true,
     link: function(scope, el, attrs){
 
       let tooltip;
