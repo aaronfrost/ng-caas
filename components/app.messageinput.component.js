@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from "angular";
 
 const template = `
 <div class="pure-u-1-24"></div>
@@ -15,38 +15,37 @@ const template = `
 <div class="pure-u-1-24"></div>
 `;
 
-class MessageInputController{
+class MessageInputController {
+    constructor($timeout, $element, InitService) {
+        this.$timeout = $timeout;
+        this.$el = $element;
 
-  constructor($timeout, $element){
-    this.$timeout = $timeout;
-    this.$el = $element;
+        this.$el.addClass("pure-g");
+        InitService.init();
+    }
 
-    this.$el.addClass('pure-g');
-    console.log("Component Initing");
-  }
+    addMessage() {
+        if (!this.currentMessage || !this.currentMessage.length) return;
 
-  addMessage(){
-    if(!this.currentMessage || !this.currentMessage.length) return;
+        let newMessage = {
+            text: this.currentMessage,
+            creator: 66,
+            isNew: true
+        };
 
-    let newMessage = {
-      text: this.currentMessage,
-      creator: 66,
-      isNew: true
-    };
+        this.onNewMessage({ message: newMessage });
+        this.$timeout(() => (newMessage.isNew = false), 2500);
 
-    this.onNewMessage({message: newMessage});
-    this.$timeout(()=>newMessage.isNew = false, 2500);
-
-    this.currentMessage = undefined;
-  }
+        this.currentMessage = undefined;
+    }
 }
 
-const app = angular.module('app.components');
+const app = angular.module("app.components");
 
-app.component('appMessageInput', {
-  template,
-  controller: MessageInputController,
-  bindings:{
-    onNewMessage: '&'
-  }
-})
+app.component("appMessageInput", {
+    template,
+    controller: MessageInputController,
+    bindings: {
+        onNewMessage: "&"
+    }
+});

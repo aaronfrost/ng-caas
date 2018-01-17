@@ -1,28 +1,31 @@
 {
-  "name": "caas",
-  "version": "1.0.0",
-  "description": "This is a project for my talk about Components as a Service. I will be giving this talk at ngCruise in May 2017. If you are interested in learning more about the topic or seeing the talk, and I didn't update the Readme.md with the link to the talk, please reach out to me and let me know. I will happily add that. ",
-  "main": "index.js",
-  "scripts": {
-    "setup": "npm install && ./node_modules/.bin/jspm install"
-  },
-  "author": "Frosty <aaron@frosty.io>",
-  "license": "MIT",
-  "dependencies": {
-    "systemjs": "^0.20.12"
-  },
-  "devDependencies": {
-    "jspm": "^0.16.53"
-  },
-  "jspm": {
+    "name": "caas",
+    "version": "1.0.0",
+    "description":
+        "This is a project for my talk about Components as a Service. I will be giving this talk at ngCruise in May 2017. If you are interested in learning more about the topic or seeing the talk, and I didn't update the Readme.md with the link to the talk, please reach out to me and let me know. I will happily add that. ",
+    "main": "index.js",
+    "scripts": {
+        "setup": "npm install && ./node_modules/.bin/jspm install",
+        "start": "http-server . -p 4300"
+    },
+    "author": "Frosty <aaron@frosty.io>",
+    "license": "MIT",
     "dependencies": {
-      "angular": "github:angular/bower-angular@^1.6.4",
-      "jquery": "npm:jquery@^3.2.1"
+        "systemjs": "^0.20.12"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
+        "http-server": "^0.11.1",
+        "jspm": "^0.16.53"
+    },
+    "jspm": {
+        "dependencies": {
+            "angular": "github:angular/bower-angular@^1.6.4",
+            "jquery": "npm:jquery@^3.2.1"
+        },
+        "devDependencies": {
+            "babel": "npm:babel-core@^5.8.24",
+            "babel-runtime": "npm:babel-runtime@^5.8.24",
+            "core-js": "npm:core-js@^1.1.4"
+        }
     }
-  }
 }

@@ -1,10 +1,9 @@
 export class AppComponentClass {
-  constructor() {
+    constructor(InitService) {
+        InitService.init();
+    }
 
-    console.log("Component Initing");
-  }
-
-  onMenuSelectChannel(channel){
-    this.selectedChannel = channel;
-  }
+    onMenuSelectChannel(channel) {
+        this.selectedChannel = channel;
+    }
 }

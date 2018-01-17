@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from "angular";
 
 const template = `
 <div class="pure-g" ng-click="$ctrl.toggleMessagePopover()" ng-class="{'is-new': $ctrl.message.isNew}">
@@ -37,58 +37,58 @@ const template = `
 </app-modal>
 `;
 
-class MessageController{
+class MessageController {
+    constructor(UserService, $element, InitService) {
+        this.userService = UserService;
+        this.$el = $element;
 
-  constructor(UserService, $element){
-    this.userService = UserService;
-    this.$el = $element;
-
-    this.showEditModal = false;
-    console.log("Component Initing");
-  }
-
-  $onChanges(changes){
-    if(changes.message && changes.message.currentValue){
-      this.setupMessage();
+        this.showEditModal = false;
+        InitService.init();
     }
-  }
 
-  setupMessage(){
-    this.originalMessageText = this.message.text;
-    this.userService.getUserById(this.message.creator)
-      .then(user=> this.creator = user);
-  }
+    $onChanges(changes) {
+        if (changes.message && changes.message.currentValue) {
+            this.setupMessage();
+        }
+    }
 
-  toggleMessagePopover(){
-    this.showPopover = !!!this.showPopover;
-  }
+    setupMessage() {
+        this.originalMessageText = this.message.text;
+        this.userService
+            .getUserById(this.message.creator)
+            .then(user => (this.creator = user));
+    }
 
-  onMessagePopoverClose(){
-    this.showPopover = false;
-  }
+    toggleMessagePopover() {
+        this.showPopover = !!!this.showPopover;
+    }
 
-  onEditModalClosed(){
-    this.showEditModal = false;
-  }
+    onMessagePopoverClose() {
+        this.showPopover = false;
+    }
 
-  toggleShowEditModal(){
-    this.showEditModal = !!!this.showEditModal;
-  }
+    onEditModalClosed() {
+        this.showEditModal = false;
+    }
 
-  saveEditedMessage(){
-    this.toggleShowEditModal();
-  }
+    toggleShowEditModal() {
+        this.showEditModal = !!!this.showEditModal;
+    }
 
-  cancelEditedMessage(){
-    this.message.text = this.originalMessageText;
-    this.toggleShowEditModal();
-  }
+    saveEditedMessage() {
+        this.toggleShowEditModal();
+    }
+
+    cancelEditedMessage() {
+        this.message.text = this.originalMessageText;
+        this.toggleShowEditModal();
+    }
 }
 
-angular.module('app.components').component('appMessage', {
-  template: template,
-  controller: MessageController,
-  bindings:{
-    message: '<'
-  }
-})
+angular.module("app.components").component("appMessage", {
+    template: template,
+    controller: MessageController,
+    bindings: {
+        message: "<"
+    }
+});
