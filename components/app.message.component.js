@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from "angular";
 
 const template = `
 <div class="pure-g" ng-click="$ctrl.toggleMessagePopover()" ng-class="{'is-new': $ctrl.message.isNew}">
@@ -43,112 +43,113 @@ const modalTemplate = `
 </app-modal>
 `;
 
-class MessageController{
+class MessageController {
+    constructor(UserService, $element, ComponentService, InitService) {
+        this.userService = UserService;
+        this.componentService = ComponentService;
+        this.$el = $element;
 
-  constructor(UserService, $element, ComponentService){
-    this.userService = UserService;
-    this.componentService = ComponentService;
-    this.$el = $element;
-
-    this.showEditModal = false;
-    console.log("Component Initing");
-  }
-
-  $onChanges(changes){
-    if(changes.message && changes.message.currentValue){
-      this.setupMessage();
+        this.showEditModal = false;
+        InitService.init();
     }
-  }
 
-  $onDestroy(){
-    if(this.popoverRef){
-      this.popoverRef.api.doDestroy();
-    }
-  }
-
-  setupMessage(){
-    this.originalMessageText = this.message.text;
-    this.userService.getUserById(this.message.creator)
-      .then(user=> this.creator = user);
-  }
-
-  toggleMessagePopover(){
-    this.showPopover = !!!this.showPopover;
-
-    if(this.showPopover){
-      this.createPopover()
-    }
-  }
-
-  createPopover(){
-    let ref = this.popoverRef = this.componentService.createComponent({
-      template: popoverTemplate,
-      anchor: this.$el,
-      data: {
-        getShowPopover: ()=> this.showPopover,
-        onMessagePopoverClose: ()=> {
-          this.showPopover = false;
-          ref.api.doDestroy();
-        },
-        onClickEdit: ()=>{
-          this.toggleShowEditModal();
-          this.toggleMessagePopover()
+    $onChanges(changes) {
+        if (changes.message && changes.message.currentValue) {
+            this.setupMessage();
         }
-      }
-    });
-    ref.result.then(()=>{
-      this.popoverRef = undefined;
-    }, ()=>{
-
-    })
-  }
-
-  onMessagePopoverClose(){
-    this.showPopover = false;
-  }
-
-  onEditModalClosed(){
-    this.showEditModal = false;
-  }
-
-  toggleShowEditModal(){
-    this.showEditModal = !!!this.showEditModal;
-    if(this.showEditModal){
-      this.createEditModal();
     }
-  }
 
-  createEditModal(){
-    let ref = this.modalRef = this.componentService.createComponent({
-      template: modalTemplate,
-      anchor: this.$el,
-      data: {
-        onEditModalClosed: ()=> {
-          this.onEditModalClosed();
-          ref.api.doDestroy();
-        },
-        getShowModal: ()=> this.showEditModal,
-        message: this.message,
-        cancelEditedMessage: ()=> this.cancelEditedMessage(),
-        saveEditedMessage: ()=> this.saveEditedMessage()
-      }
-    })
-  }
+    $onDestroy() {
+        if (this.popoverRef) {
+            this.popoverRef.api.doDestroy();
+        }
+    }
 
-  saveEditedMessage(){
-    this.toggleShowEditModal();
-  }
+    setupMessage() {
+        this.originalMessageText = this.message.text;
+        this.userService
+            .getUserById(this.message.creator)
+            .then(user => (this.creator = user));
+    }
 
-  cancelEditedMessage(){
-    this.message.text = this.originalMessageText;
-    this.toggleShowEditModal();
-  }
+    toggleMessagePopover() {
+        this.showPopover = !!!this.showPopover;
+
+        if (this.showPopover) {
+            this.createPopover();
+        }
+    }
+
+    createPopover() {
+        let ref = (this.popoverRef = this.componentService.createComponent({
+            template: popoverTemplate,
+            anchor: this.$el,
+            data: {
+                getShowPopover: () => this.showPopover,
+                onMessagePopoverClose: () => {
+                    this.showPopover = false;
+                    ref.api.doDestroy();
+                },
+                onClickEdit: () => {
+                    this.toggleShowEditModal();
+                    this.toggleMessagePopover();
+                }
+            }
+        }));
+        ref.result.then(
+            () => {
+                this.popoverRef = undefined;
+            },
+            () => {}
+        );
+    }
+
+    onMessagePopoverClose() {
+        this.showPopover = false;
+    }
+
+    onEditModalClosed() {
+        this.showEditModal = false;
+    }
+
+    toggleShowEditModal() {
+        this.showEditModal = !!!this.showEditModal;
+        if (this.showEditModal) {
+            this.createEditModal();
+        }
+    }
+
+    createEditModal() {
+        let ref = (this.modalRef = this.componentService.createComponent({
+            template: modalTemplate,
+            anchor: this.$el,
+            data: {
+                onEditModalClosed: () => {
+                    this.onEditModalClosed();
+                    ref.api.doDestroy();
+                },
+                getShowModal: () => this.showEditModal,
+                message: this.message,
+                cancelEditedMessage: () => this.cancelEditedMessage(),
+                saveEditedMessage: () => this.saveEditedMessage()
+            }
+        }));
+    }
+
+    saveEditedMessage() {
+        this.toggleShowEditModal();
+    }
+
+    cancelEditedMessage() {
+        this.message.text = this.originalMessageText;
+        this.toggleShowEditModal();
+    }
 }
 
-angular.module('app.components').component('appMessage', {
-  template: template,
-  controller: MessageController,
-  bindings:{
-    message: '<'
-  }
-})
+angular.module("app.components").component("appMessage", {
+    template: template,
+    controller: MessageController,
+    bindings: {
+        message: "<"
+    }
+});

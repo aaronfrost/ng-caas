@@ -1,52 +1,51 @@
 export class AvatarController {
-  constructor(UserService, $attrs) {
-    this.userService = UserService;
-    this.attrs = $attrs;
+    constructor(UserService, $attrs, InitService) {
+        this.userService = UserService;
+        this.attrs = $attrs;
 
-    this.showPopover = false;
-    this.updatePicSize();
-    this.considerPopover();
-    console.log("Component Initing");
-  }
-
-  $onChanges(changes){
-    if(changes.userId && changes.userId.currentValue){
-      this.updateUser();
+        this.showPopover = false;
+        this.updatePicSize();
+        this.considerPopover();
+        InitService.init();
     }
-    if(changes.size && changes.size.currentValue){
-      this.updatePicSize();
+
+    $onChanges(changes) {
+        if (changes.userId && changes.userId.currentValue) {
+            this.updateUser();
+        }
+        if (changes.size && changes.size.currentValue) {
+            this.updatePicSize();
+        }
     }
-  }
 
-  updateUser(){
-    this.user = undefined;
-    return this.userService.getUserById(this.userId)
-      .then(user=>{
-        this.user = user;
-        return this.user;
-      })
-  }
-
-  updatePicSize(){
-    let {size} = this.attrs;
-    if(['large', 'medium', 'thumbnail'].includes(size)){
-      this.picSize = size;
-    } else {
-      this.picSize = 'thumbnail';
+    updateUser() {
+        this.user = undefined;
+        return this.userService.getUserById(this.userId).then(user => {
+            this.user = user;
+            return this.user;
+        });
     }
-  }
 
-  considerPopover(){
-    if(this.attrs.noPopover){
-      this.noPopover = true;
+    updatePicSize() {
+        let { size } = this.attrs;
+        if (["large", "medium", "thumbnail"].includes(size)) {
+            this.picSize = size;
+        } else {
+            this.picSize = "thumbnail";
+        }
     }
-  }
 
-  togglePopover(e){
-    this.showPopover = !!!this.showPopover;
-  }
+    considerPopover() {
+        if (this.attrs.noPopover) {
+            this.noPopover = true;
+        }
+    }
 
-  popoverClosed(){
-    this.showPopover = false;
-  }
+    togglePopover(e) {
+        this.showPopover = !!!this.showPopover;
+    }
+
+    popoverClosed() {
+        this.showPopover = false;
+    }
 }
